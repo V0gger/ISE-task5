@@ -1,0 +1,22 @@
+[formats]
+ALU: 1,1,1,1
+MEM: 1,1,1,1,1
+DIV: 1,1,1,1,1,1
+JMP: 1,1
+
+[pipeline]
+stages: 6          # число ступеней конвейера S1..S6
+conflict: memory   # конфликт ресурсов: регистровый файл (regfile) или память (memory)
+
+[code]
+L1: ALU, R1 <- R2, R3
+L2: MEM, M1 <- R1, R4
+L3: ALU, R5 <- R1, R2
+L4: DIV, R6 <- R5, M1
+L5: MEM, M2 <- R6, R3
+L6: ALU, R1 <- R6, R7
+L7: JMP -> L10 ; условие: R7
+L8: ALU, R8 <- R2, R4
+L9: MEM, M3 <- R8, R1
+L10: ALU, R9 <- R8, R7
+
